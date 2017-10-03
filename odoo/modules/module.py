@@ -434,12 +434,13 @@ def get_test_modules(module):
         mod = importlib.import_module('.tests', modpath)
     except Exception as e:
         # If module has no `tests` sub-module, no problem.
-        if not pycompat.text_type(e).startswith(u'No module named'):
+        tests_path = u"No module named '%s.tests'" % modpath
+        if not pycompat.text_type(e).startswith(tests_path):
             _logger.exception('Can not `import %s`.', module)
         return []
 
     if hasattr(mod, 'fast_suite') or hasattr(mod, 'checks'):
-        _logger.warn(
+        _logger.warn(   
             "Found deprecated fast_suite or checks attribute in test module "
             "%s. These have no effect in or after version 8.0.",
             mod.__name__)

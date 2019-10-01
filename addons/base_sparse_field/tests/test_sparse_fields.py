@@ -38,3 +38,10 @@ class TestSparseFields(common.TransactionCase):
         self.assertEqual(len(fields), len(names))
         for field in fields:
             self.assertEqual(field.serialization_field_id.name, 'data')
+
+    def test_serialized(self):
+        """ test serialized fields. """
+        record = self.env['sparse_fields.test'].create(
+            {'data': [1, 2, 3]},
+        )
+        self.assertEqual(record.data, [1, 2, 3])

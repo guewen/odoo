@@ -4,6 +4,8 @@
 """ Models registries.
 
 """
+import traceback
+
 from collections import Mapping, defaultdict, deque
 from contextlib import closing, contextmanager
 from functools import partial
@@ -347,6 +349,11 @@ class Registry(Mapping):
     def _clear_cache(self):
         """ Clear the cache and mark it as invalidated. """
         self.cache.clear()
+        if not self.cache_invalidated:  # do not spam in case of module update
+            _logger.info(
+                "An invalidation of the global cache signaling has"
+                " been requested. Stack: %s", traceback.format_stack()
+            )
         self.cache_invalidated = True
 
     def clear_caches(self):
